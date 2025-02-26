@@ -34,6 +34,8 @@ jobs:
           curl -L https://repo1.maven.org/maven2/javax/servlet/javax.servlet-api/3.0.1/javax.servlet-api-3.0.1.jar -o lib/javax.servlet-api-3.0.1.jar
           curl -L https://repo1.maven.org/maven2/org/junit/jupiter/junit-jupiter-api/5.9.2/junit-jupiter-api-5.9.2.jar -o lib/junit-jupiter-api.jar
           curl -L https://repo1.maven.org/maven2/org/junit/jupiter/junit-jupiter-engine/5.9.2/junit-jupiter-engine-5.9.2.jar -o lib/junit-jupiter-engine.jar
+          curl -L https://repo1.maven.org/maven2/org/junit/jupiter/junit-jupiter-params/5.9.2/junit-jupiter-params-5.9.2.jar -o lib/junit-jupiter-params.jar
+          curl -L https://repo1.maven.org/maven2/org/junit/platform/junit-platform-suite-api/1.9.2/junit-platform-suite-api-1.9.2.jar -o lib/junit-platform-suite-api.jar
 
       - name: Compile Source Files
         run: |
@@ -45,8 +47,8 @@ jobs:
         run: |
           echo "Checking for Java test files in test directory..."
           find test -type f -name "*.java" -print
-          if [ -z "$(find test -type f -name '*.java' 2>/dev/null)" ]; then echo "No test files found, skipping compilation."; else javac -d bin -cp "bin:lib/junit-jupiter-api.jar:lib/junit-jupiter-engine.jar" $(find test -type f -name "*.java"); fi
+          if [ -z "$(find test -type f -name '*.java' 2>/dev/null)" ]; then echo "No test files found, skipping compilation."; else javac -d bin -cp "bin:lib/junit-jupiter-api.jar:lib/junit-jupiter-engine.jar:lib/junit-jupiter-params.jar:lib/junit-platform-suite-api.jar" $(find test -type f -name "*.java"); fi
 
       - name: Run Tests
         run: |
-          if [ -z "$(find bin/ -name '*.class' 2>/dev/null)" ]; then echo "No compiled classes found, skipping tests."; else java -cp "bin:lib/junit-jupiter-api.jar:lib/junit-jupiter-engine.jar" org.junit.platform.console.ConsoleLauncher --scan-class-path; fi
+          if [ -z "$(find bin/ -name '*.class' 2>/dev/null)" ]; then echo "No compiled classes found, skipping tests."; else java -cp "bin:lib/junit-jupiter-api.jar:lib/junit-jupiter-engine.jar:lib/junit-jupiter-params.jar:lib/junit-platform-suite-api.jar" org.junit.platform.console.ConsoleLauncher --scan-class-path; fi
