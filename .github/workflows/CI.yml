@@ -41,7 +41,9 @@ jobs:
 
       - name: Compile Test Files
         run: |
-          if [ -z "$(find test/ -name '*.java' 2>/dev/null)" ]; then echo "No test files found, skipping compilation."; else javac -d bin -cp "bin:lib/*" test/Test1.java test/Test2.java test/Test3.java; fi
+          echo "Checking for Java test files in test directory..."
+          find test -type f -name "*.java" -print
+          if [ -z "$(find test -type f -name '*.java' 2>/dev/null)" ]; then echo "No test files found, skipping compilation."; else javac -d bin -cp "bin:lib/*" $(find test -type f -name "*.java"); fi
 
       - name: Run Tests
         run: |
